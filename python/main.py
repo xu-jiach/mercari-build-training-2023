@@ -1,10 +1,12 @@
 import os
 import logging
 import pathlib
-from fastapi import FastAPI, Form, HTTPException
+import hashlib
+import json
+from fastapi import FastAPI, Form, HTTPException, UploadFile, File
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
-import json
+
 
 
 app = FastAPI()
@@ -38,9 +40,20 @@ def get_items():
 
 
 @app.post("/items")
-def add_item(name: str = Form(...), category: str = Form(...)):
-    logger.info(f"Receive item: {name}, category: {category}")
+def add_item(name: str = Form(...), category: str = Form(...), image: UploadFile = File(...)):
+    logger.info(f"Receive item: {name}, category: {category}, image: {image.filename}")
 
+    # hash image url and save image
+
+    image_file = image.file.read()
+    image_hash = hashlib.sha256(image_file).hexdigest()
+    image_filename = f"{image_hash}.jpg"
+    image_path = images / image_filename
+    
+    with open(image_path, 'wb') as f:
+        f.write(image_file)
+        
+    
     # Load items.json
     try:
         with open('items.json', 'r') as f:
@@ -49,13 +62,13 @@ def add_item(name: str = Form(...), category: str = Form(...)):
         items = {"items": []}
 
     # Append the new item to the list
-    items['items'].append({"name": name, "category": category})
+    items['items'].append({"name": name, "category": category, "image": image_filename})
 
     # Save items.json
     with open('items.json', 'w') as f:
         json.dump(items, f)
 
-    return {"message": f"item received: {name}, category: {category}"}
+    return {"message": f"item received: {name}, category: {category}, image: {image_filename} "}
 
 @app.get("/image/{image_filename}")
 async def get_image(image_filename):
@@ -70,3 +83,13 @@ async def get_image(image_filename):
         image = images / "default.jpg"
 
     return FileResponse(image)
+
+@app.get("/items/{item_id}")
+def get_item_withID(item_id:int):
+    try:
+        with open('items.json', 'r') as f:
+            items = json.load(f)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Item not found")
+    
+    return items['items'][item_id]
