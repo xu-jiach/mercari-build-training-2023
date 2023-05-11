@@ -10,7 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 
-app = FastAPI()
+app = FastAPI(debug = True)
 logger = logging.getLogger("uvicorn")
 logger.level = logging.INFO
 images = pathlib.Path(__file__).parent.resolve() / "images"
