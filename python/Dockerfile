@@ -2,7 +2,6 @@ FROM python:3.10.6-alpine
 
 RUN addgroup -S mercari && adduser -S trainee -G mercari
 
-
 # Set the working directory
 WORKDIR /app
 
@@ -17,9 +16,9 @@ RUN mkdir -p /app/db \
     && mkdir -p /app/images 
 
 # Copy the remaining file into the container
-COPY db .
+COPY db db
 COPY main.py .
-COPY images .
+COPY images images
 
 # Change the ownership of the directory
 RUN chown -R trainee:mercari /app/db \
@@ -27,5 +26,6 @@ RUN chown -R trainee:mercari /app/db \
 
 # Switch to the trainee user
 USER trainee
+
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "9000"]
