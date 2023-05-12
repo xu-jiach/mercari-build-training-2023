@@ -108,7 +108,7 @@ def add_item(name: str = Form(...), category: str = Form(...), image: UploadFile
         try:
             cursor.execute("INSERT INTO category (name) VALUES (?)", (category,))
             conn.commit()
-            category_id = cursor.fetchone()[0]
+            category_id = cursor.lastrowid  # get the last inserted ID
         except sqlite3.IntegrityError:
             cursor.execute("SELECT id FROM category WHERE name = ?", (category,))
             category_id = cursor.fetchone()[0]
