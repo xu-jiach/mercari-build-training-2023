@@ -13,17 +13,6 @@ WORKDIR /app/python
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-<<<<<<< Updated upstream
-# Create Directory
-RUN mkdir -p /app/db \
-    && mkdir -p /app/images 
-
-# Copy the remaining file into the container
-COPY db .
-COPY main.py .
-COPY images .
-=======
->>>>>>> Stashed changes
 
 # Change the ownership of the directory
 RUN chown -R trainee:mercari /app/python/db \
