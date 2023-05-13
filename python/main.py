@@ -33,33 +33,6 @@ with open(db_setup_path, 'r') as f:
 cursor = conn.cursor()
 cursor.executescript(file)
 conn.commit()
-# # create the item table
-# def create_items_table(conn: sqlite3.Connection):
-#     cursor = conn.cursor()
-#     cursor.execute("""
-#         CREATE TABLE IF NOT EXISTS items (
-#             id INTEGER PRIMARY KEY AUTOINCREMENT,
-#             name TEXT NOT NULL,
-#             category_id INTEGER,
-#             image_filename TEXT NOT NULL,
-#             FOREIGN KEY (category_id) REFERENCES categories (id)
-#         )
-#     """)
-#     conn.commit()
-
-# def create_category_table(conn: sqlite3.Connection):
-#     cursor = conn.cursor()
-#     cursor.execute("""
-#         CREATE TABLE IF NOT EXISTS category (
-#             id INTEGER PRIMARY KEY AUTOINCREMENT,
-#             name TEXT NOT NULL UNIQUE
-#         )
-#     """)
-#     conn.commit()
-
-
-
-
 
                   
 @app.get("/")
