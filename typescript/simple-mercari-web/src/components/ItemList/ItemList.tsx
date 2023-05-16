@@ -46,14 +46,14 @@ export const ItemList: React.FC<Prop> = (props) => {
   }, [reload]);
 
   return (
-    <div>
+    <div className="Grid">
       {items.map((item) => {
 
         const imageURL = server.concat('/images/', item.image_filename);
         return (
           <div key={item.id} className='ItemList'>
             {/* TODO: Task 1: Replace the placeholder image with the item image */}
-            <img src={imageURL} alt={item.name} />
+            <img className="ItemImage" src={imageURL} alt = {placeholderImage} />
             <p>
               <span>Name: {item.name}</span>
               <br />

@@ -155,7 +155,7 @@ app = app_instance.app
 app.get("/")(app_instance.root)
 app.get("/items")(app_instance.get_items)
 app.post("/items")(app_instance.add_item)
-app.get("/image/{image_filename}")(app_instance.get_image)
+app.get("/images/{image_filename}")(app_instance.get_image)
 app.get("/items/{item_id}")(app_instance.get_item_withID)
 app.get("/search")(app_instance.search_item)
 
@@ -170,7 +170,7 @@ def main():
     app.get("/")(app_instance.root)
     app.get("/items")(app_instance.get_items)
     app.post("/items")(app_instance.add_item)
-    app.get("/image/{image_filename}")(app_instance.get_image)
+    app.get("/images/{image_filename}")(app_instance.get_image)
     app.get("/items/{item_id}")(app_instance.get_item_withID)
     app.get("/search")(app_instance.search_item)
 
