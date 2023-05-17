@@ -14,7 +14,8 @@ app = FastAPI(debug = True)
 logger = logging.getLogger("uvicorn")
 logger.level = logging.INFO
 images = pathlib.Path(__file__).parent.resolve() / "images"
-dbpath = pathlib.Path(__file__).parent.resolve() / "db" / "mercari.sqlite3"
+dbpath = pathlib.Path(__file__).parent.parent.resolve() / "db" / "mercari.sqlite3"
+db_setup_path = pathlib.Path(__file__).parent.parent.resolve() / "db" / "items.db"
 origins = [ os.environ.get('FRONT_URL', "http://localhost:3000") ]
 app.add_middleware(
     CORSMiddleware,
@@ -24,37 +25,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 conn = sqlite3.connect(dbpath)
-
-# create the item table
-def create_items_table(conn: sqlite3.Connection):
-    cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS items (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            category_id INTEGER,
-            image_filename TEXT NOT NULL,
-            FOREIGN KEY (category_id) REFERENCES categories (id)
-        )
-    """)
-    conn.commit()
-
-def create_category_table(conn: sqlite3.Connection):
-    cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS category (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL UNIQUE
-        )
-    """)
-    conn.commit()
-
-# creaste the tables
-create_category_table(conn) 
-create_items_table(conn)
-
-
+with open(db_setup_path, 'r') as f:
+    file = f.read()
+    
+cursor = conn.cursor()
+cursor.executescript(file)
+conn.commit()
 
                   
 @app.get("/")
