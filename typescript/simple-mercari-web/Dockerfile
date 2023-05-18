@@ -5,20 +5,17 @@ FROM node:18-alpine
 RUN addgroup -S mercari && adduser -S trainee -G mercari
 
 # Set the working directory to /app
-WORKDIR /home
+WORKDIR /app
 
-COPY typescript typescript
+COPY . /app
 
-# Copy the package.json and package-lock.json
-
-
-WORKDIR /home/typescript/simple-mercari-web
+WORKDIR /app/typescript/simple-mercari-web
 
 # Install project dependencies
 RUN npm ci
 
 # Change ownership of the /home directory to trainee
-RUN chown -R trainee:mercari /home/typescript/simple-mercari-web
+RUN chown -R trainee:mercari /app/typescript/simple-mercari-web
 
 # Switch to the new user
 USER trainee

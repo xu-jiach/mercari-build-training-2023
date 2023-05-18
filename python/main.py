@@ -86,7 +86,7 @@ def add_item(name: str = Form(...), category: str = Form(...), image: UploadFile
         try:
             cursor.execute("INSERT INTO category (name) VALUES (?)", (category,))
             conn.commit()
-            category_id = cursor.lastrowid  # get the last inserted ID
+            category_id = cursor.lastrowid
         except sqlite3.IntegrityError:
             cursor.execute("SELECT id FROM category WHERE name = ?", (category,))
             category_id = cursor.fetchone()[0]
@@ -100,7 +100,7 @@ def add_item(name: str = Form(...), category: str = Form(...), image: UploadFile
 
     return {"message": f"item received: {name}, category: {category}, image: {image_filename} "}
 
-@app.get("/image/{image_filename}")
+@app.get("/images/{image_filename}")
 async def get_image(image_filename):
     # Create image path
     image = images / image_filename
