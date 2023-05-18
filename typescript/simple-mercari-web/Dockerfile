@@ -1,4 +1,4 @@
-# Use the official Node.js 16 image from Docker Hub
+# Use the official Node.js 18 image from Docker Hub
 FROM node:18-alpine
 
 # Add a new group and user
