@@ -15,9 +15,9 @@ COPY typescript typescript
 WORKDIR /home/typescript/simple-mercari-web
 
 # Install project dependencies
-RUN npm install
+RUN npm ci
 
-# Change ownership of the /app directory to trainee
+# Change ownership of the /home directory to trainee
 RUN chown -R trainee:mercari /home/typescript/simple-mercari-web
 
 # Switch to the new user

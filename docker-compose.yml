@@ -11,7 +11,6 @@ services:
       - ./python:/app/python
       - ./python/images:/app/python/images
       - ./db:/app/db
-      # - .:/code
     environment: 
       - FRONT_URL=http://localhost:3000
 
@@ -25,7 +24,9 @@ services:
       - "3000:3000"
     volumes:
       - ./typescript/simple-mercari-web:/home/typescript/simple-mercari-web
+      - ./typescript/simple-mercari-web/node_modules:/home/typescript/simple-mercari-web/node_modules
       - ./typescript/simple-mercari-web/src:/home/typescript/simple-mercari-web/src
+      - ./typescript/simple-mercari-web/public:/home/typescript/simple-mercari-web/public
     environment: 
       - REACT_APP_API_URL=http://127.0.0.1:9000
 
