@@ -5,24 +5,16 @@ RUN addgroup -S mercari && adduser -S trainee -G mercari
 # Set the working directory
 WORKDIR /app
 
-# Copy requirements.txt into the container
-COPY requirements.txt .
+# Copy the current directory contents into the container at /app
+COPY . /app
 
+WORKDIR /app/python
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Create Directory
-RUN mkdir -p /app/db \
-    && mkdir -p /app/images 
-
-# Copy the remaining file into the container
-COPY db db
-COPY main.py .
-COPY images images
-
 # Change the ownership of the directory
 RUN chown -R trainee:mercari /app/db \
-    && chown -R trainee:mercari /app/images 
+    && chown -R trainee:mercari /app/python/images 
 
 # Switch to the trainee user
 USER trainee
